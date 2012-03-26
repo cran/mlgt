@@ -1,0 +1,64 @@
+mlgt changes
+
+Ver 0.16
+
+Changes to setMethod documentation to prevent warnings in CRAN.
+
+Removed HLA/IMGT sample data. Replaced with download in README.
+
+
+Ver 0.15
+
+Fixed bug in callGenotypes that was not adding 'NA' columns using approxMatch=TRUE
+
+Corrected location of example data.
+
+
+Ver 0.14
+
+Fixed bug in alignReport causing error when only 1 or 0 sequences.
+
+Added copyIfSpaces() to copy original sequence files if their path contains spaces. 
+
+Added combineMlgtResults() function to combine mlgt results. Especially useful if runnning mlgt in parallel but could also be used to combine results across runs.
+
+Added 'filePrefix' parameter to writeGenotypeCallsToFile, allows users to distinguish sets of output tables.
+
+Reworked callGenotypes() to allow user specification of custom methods. The previous default method callGenotypes.table() is now not aliased and is named callGenotypes.default(). Removed setGeneric call for callGenotypes() as there is now only one primary method.
+
+Altered callGenotypes.default() to also check that the third most abundant variant accounts for  less than 10% of used sequences [maxPropVarThree=0.1].
+
+Reworked getSubseqsTable to use [maxVarsToAlign=30] most common variants only when greater than a threshold [minTotalCount=500] number of raw sequences. This function now also returns an object of class 'varCount' which includes the table of variants as well as summary counts of variants and total reads. The result sub.alignments contain fewer raw variants and are much tidier. Updated mlgt() to accept the new varCount object and added new statistics as new columns in the table that appears in markerSampleList.
+
+Reworked mlgt()/getSubseqsTable() to include errorCorrection [errorCorrect=TRUE].
+
+Reworked mlgt()/getSubseqsTable() to include a length filter on raw variants [minLength=70].
+
+Added similarity allele matching to callGenotypes [approxMatching=TRUE]. This uses a new internal function makeVarAlleleBlastMap() and maps variants to allele by greatest BLAST similarity. 
+
+Added 'userAlignment' parameter to createKnownAlleleList() to allow user to supply alignments with marker pre-aligned to known alleles. 
+
+Ver 0.13
+
+mlgtResult now retains all aligned variants. Enables generation of alignment reports with goal of implementing error correction.
+
+Added alignReport() function to give tabular and graphical reports on sample/marker alignments. Focused on site-specific minor allele frequency.
+
+Added errorCorrect() function to create new mlgtResult object by correct low frequency variants, site-by-site.
+
+Added dumpVariants() as a first method to output variants as fasta sequences. Overlaps a bit with dumpVariantMap.mlgtResult
+
+Ver 0.12
+
+Added checks for whitespace in paths. Terminates prepareMlgtRun if inputFastaFile has whitespace. Could not get System(formatdb) to work with them (even with multiple escapes). 
+
+Replaced user specification of blastallPath, musclePath etc with environment variables BLASTALL_PATH, MUSCLE_PATH etc, which must be set by Sys.setenv. Added checks to prepareMlgtRun that they are set. Original variables still used internally. 
+
+Remove re-use of temp file names. Unique file names allows multiple instances of mlgt() to read/write in same directory (future parallelization). Files could always be deleted after use.
+
+Different sample data. 
+
+
+Ver 0.11
+
+This was the first package.
